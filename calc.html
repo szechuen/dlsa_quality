@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--  <link rel="shortcut icon" href="../../assets/ico/favicon.ico"> -->
+
+    <title>DLSA Quality Limit/Band Calculator</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="calc.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <form class="form-calc" role="form" id="form">
+        <h4 class="form-calc-heading">DLSA Quality Limit/Band Calculator</h2>
+        <div class="form-group">
+          <label class="control-label" for="defect_no">Number of defects</label>
+          <input type="text" parsley-type="number" parsley-min="0" class="form-control" id="defect_no" placeholder="Number of defects" required autofocus>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="sample_size">Sample Size</label>
+          <input type="text" parsley-type="number" parsley-min="0" class="form-control" id="sample_size" placeholder="Sample Size" required>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="confidence_level">Confidence Level</label>
+          <select class="form-control form-select" id="confidence_level" required>
+            <option value="1.6449">95% (Recommended)</option>
+            <option value="2.3263">99%</option>
+            <option value="1.2816">90%</option>
+            <option value="1.0364">85%</option>
+            <option value="0.8416">80%</option>
+            <option value="0.6745">75%</option>
+            <option value="0.5244">70%</option>
+            <option value="0.3853">65%</option>
+            <option value="0.2533">60%</option>
+          </select>
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block form-calc-button" type="button" onclick="calc()">Calculate</button>
+
+        <fieldset disabled>
+          <div class="form-group">
+            <label class="control-label" for="quality_lower">Lower Quality Limit</label>
+            <input type="text" class="form-control" id="quality_lower" placeholder="Lower Quality Limit">
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="quality_upper">Upper Quality Limit</label>
+            <input type="text" class="form-control" id="quality_upper" placeholder="Upper Quality Limit">
+          </div>
+        </fieldset>
+      </form>
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="bootstrap.min.js"></script>
+    <script type="text/javascript" src="parsley.min.js"></script>
+
+    <script type="text/javascript">
+      $('#form').parsley({
+        successClass: 'has-success', 
+        errorClass: 'has-error', 
+        errors: {
+          classHandler: function (elem, isRadioOrCheckbox){
+              return $(elem).parent();
+          }, 
+          container: function (element, isRadioOrCheckbox){
+            $container = $("<span class='help-block'></span>").insertBefore(element);
+            return $container;
+          }
+        }
+      });
+
+      function toDP(number, precision){
+          var multiplier = Math.pow(10, precision);
+          var result = Math.round(number * multiplier) / multiplier;
+          return result.toFixed(2);
+      }
+
+      function calc(){
+        if($('#form').parsley('validate')){
+
+          var C = document.getElementById("defect_no").value;
+          var n = document.getElementById("sample_size").value;
+          var z = document.getElementById("confidence_level").value;
+
+          var D_lower = (2 * C) + 2;
+          var D_upper = (2 * C);
+
+          if(C==0){
+            var M_lower = (3 / n);
+            var M_upper = 0;
+          } else{
+            var M_lower = (D_lower * Math.pow((1 - (2 / (9 * D_lower)) + (z * Math.sqrt((2 / (9 * D_lower))))), 3)) / (2 * n);
+            var M_upper = (D_upper * Math.pow((1 - (2 / (9 * D_upper)) - (z * Math.sqrt((2 / (9 * D_upper))))), 3)) / (2 * n);
+          }
+
+          Q_lower = Math.exp(-(M_lower)) * 100;
+          Q_upper = Math.exp(-(M_upper)) * 100;
+
+          document.getElementById("quality_lower").value = toDP(Q_lower, 2) + "%";
+          document.getElementById("quality_upper").value = toDP(Q_upper, 2) + "%";
+        }
+      }
+    </script>
+
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
