@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!--  <link rel="shortcut icon" href="../../assets/ico/favicon.ico"> -->
+    <meta name="description" content="DLSA Quality Limit/Band Calculator">
+    <meta name="author" content="Tan Sze Chuen">
+    <link rel="shortcut icon" href="icon.png">
 
-    <title>DLSA Quality Limit/Band Calculator</title>
+    <title>Quality Calc</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="calc.css" rel="stylesheet">
+    <link href="css/dlsa_quality.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -25,10 +25,30 @@
 
   <body>
 
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">Quality Calc</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="index.html">Basic</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+
     <div class="container">
 
       <form class="form-calc" role="form" id="form">
-        <h4 class="form-calc-heading">DLSA Quality Limit/Band Calculator</h2>
+        <h4 class="form-calc-heading">DLSA Quality Limit/Band Calculator <br><small>Basic</small></h4>
         <div class="form-group">
           <label class="control-label" for="defect_no">Number of defects</label>
           <input type="text" parsley-type="number" parsley-min="0" class="form-control" id="defect_no" placeholder="Number of defects" required autofocus>
@@ -72,9 +92,9 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/javascript" src="jquery-2.1.0.min.js"></script>
-    <script type="text/javascript" src="bootstrap.min.js"></script>
-    <script type="text/javascript" src="parsley.min.js"></script>
+    <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/parsley.min.js"></script>
 
     <script type="text/javascript">
       $('#form').parsley({
@@ -126,52 +146,3 @@
 
   </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

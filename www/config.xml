@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    <widget xmlns   = "http://www.w3.org/ns/widgets"
+        xmlns:gap   = "http://phonegap.com/ns/1.0"
+        id          = "com.szechuen.dlsa_quality"
+        versionCode = "10" 
+        version     = "1.0.0" >
+
+    <!-- versionCode is optional and Android only -->
+
+    <name>Quality Calc</name>
+
+    <description>
+        DLSA Quality Limit/Band Calculator
+    </description>
+
+    <author href="http://szechuen.com" email="tan@szechuen.com">
+        Tan Sze Chuen
+    </author>
+
+    <preference name="orientation" value="portrait" />
+
+    <icon src="icon.png" />
+    <gap:splash src="splash.png" />
+
+</widget>
