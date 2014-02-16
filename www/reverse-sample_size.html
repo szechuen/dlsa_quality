@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="DLSA Quality Limit/Band Calculator">
+    <meta name="description" content="DLSA Quality Limit/Band Calculator — Reverse: Sample Size">
     <meta name="author" content="Tan Sze Chuen">
     <link rel="shortcut icon" href="icon.png">
 
-    <title>Quality Calc</title>
+    <title>Quality Calc — Reverse: Sample Size</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -38,12 +38,12 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">Basic</a></li>
+            <li><a href="index.html">Basic</a></li>
 
-            <li class="dropdown">
+            <li class="dropdown active">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reverse <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="reverse-sample_size.html">Sample Size</a></li>
+                <li class="active"><a href="reverse-sample_size.html">Sample Size</a></li>
               </ul>
             </li>
 
@@ -58,14 +58,14 @@
     <div class="container">
 
       <form class="form-calc" role="form" id="form">
-        <h4 class="form-calc-heading">DLSA Quality Limit/Band Calculator <br><small>Basic</small></h4>
+        <h4 class="form-calc-heading">DLSA Quality Limit/Band Calculator <br><small>Reverse: Sample Size</small></h4>
         <div class="form-group">
           <label class="control-label" for="defect_no">Number of defects</label>
           <input type="text" parsley-type="digits" parsley-min="0" class="form-control" id="defect_no" placeholder="Number of defects" required autofocus>
         </div>
         <div class="form-group">
-          <label class="control-label" for="sample_size">Sample Size</label>
-          <input type="text" parsley-type="digits" parsley-min="0" class="form-control" id="sample_size" placeholder="Sample Size" required>
+          <label class="control-label" for="max_sample_size">Maximum Sample Size</label>
+          <input type="text" parsley-type="digits" parsley-min="0" class="form-control" id="max_sample_size" placeholder="Maximum Sample Size" required>
         </div>
         <div class="form-group">
           <label class="control-label" for="confidence_level">Confidence Level</label>
@@ -81,10 +81,18 @@
             <option value="0.2533">60%</option>
           </select>
         </div>
+        <div class="form-group">
+          <label class="control-label" for="quality_min">Minimum Quality Limit (%)</label>
+          <input type="text" parsley-type="number" parsley-min="0" parsley-max="100" class="form-control" id="quality_min" placeholder="Minimum Quality Limit (%)" required>
+        </div>
 
-        <button class="btn btn-lg btn-primary btn-block form-calc-button" type="button" onclick="calc()">Calculate</button>
+        <button class="btn btn-lg btn-primary btn-block form-calc-button" type="button" onclick="calc_sample_size()">Calculate Sample Size</button>
 
         <fieldset disabled>
+          <div class="form-group">
+            <label class="control-label" for="sample_size">Sample Size</label>
+            <input type="text" class="form-control" id="sample_size" placeholder="Sample Size">
+          </div>
           <div class="form-group">
             <label class="control-label" for="quality_lower">Lower Quality Limit</label>
             <input type="text" class="form-control" id="quality_lower" placeholder="Lower Quality Limit">
@@ -122,19 +130,44 @@
         }
       });
 
-      function calc(){
+      function calc_sample_size(){
         if($('#form').parsley('validate')){
 
           var C = document.getElementById("defect_no").value;
-          var n = document.getElementById("sample_size").value;
+          var n_max = document.getElementById("max_sample_size").value;
           var z = document.getElementById("confidence_level").value;
+          var Q_min = document.getElementById("quality_min").value;
 
-          var Q = dlsa_quality(C, n, z);
-          var Q_lower = Q[0];
-          var Q_upper = Q[1];
+          var n;
+          var found = false;
+          for(n = 0; n <= n_max; n++){
 
-          document.getElementById("quality_lower").value = toDP(Q_lower, 2) + "%";
-          document.getElementById("quality_upper").value = toDP(Q_upper, 2) + "%";
+            document.getElementById("sample_size").value = n;
+
+            var Q = dlsa_quality(C, n, z);
+            var Q_lower = Q[0];
+            var Q_upper = Q[1];
+
+            document.getElementById("quality_lower").value = toDP(Q_lower, 2) + "%";
+            document.getElementById("quality_upper").value = toDP(Q_upper, 2) + "%";
+
+            if(Q_lower>=Q_min){
+              found = true;
+              break;
+            }
+
+          }
+
+          if(found){
+            document.getElementById("sample_size").parentNode.className = "form-group has-success";
+          } else{
+            document.getElementById("sample_size").parentNode.className = "form-group has-error";
+
+            document.getElementById("sample_size").value = "Not found";
+            document.getElementById("quality_lower").value = "";
+            document.getElementById("quality_upper").value = "";
+          }
+
         }
       }
     </script>
